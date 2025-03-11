@@ -13,7 +13,6 @@ class Model {
   async select(columns, clause) {
     let query = `SELECT ${columns} FROM ${this.table}`;
     if (clause) query += clause;
-    console.log(query);
     return this.pool.query(query);
   }
 
@@ -45,9 +44,9 @@ class Model {
         sqlQuery = `"${key}" = '${data[key]}' `;
         query += `${sqlQuery}`;
         query += `${clause} RETURNING *`;
-        console.log(query, 'query');
         return this.pool.query(query);
       }
+
       sqlQuery = `"${key}" = '${data[key]}',`;
       query += `${sqlQuery}`;
     }

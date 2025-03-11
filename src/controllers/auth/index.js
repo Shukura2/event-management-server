@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import Model from '../../models/model';
 import assignToken from '../../utils/assignToken';
 
@@ -32,7 +33,6 @@ export const createUser = async (req, res) => {
 export const logoutUser = (req, res) => {
   req.logout((err) => {
     if (err) {
-      console.log('logout error', err);
       return res.status(500).json({ message: 'Failed to logout' });
     }
     req.session.destroy(() => {

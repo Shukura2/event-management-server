@@ -9,7 +9,8 @@
     "lint": "./node_modules/.bin/eslint ./src",
     "pretty": "prettier --write src/**/*.{js,json} ",
     "postpretty": "npm run lint --fix",
-    "runQuery": "babel-node ./src/utils/runQuery"
+    "runQuery": "babel-node ./src/utils/runQuery",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@babel/cli": "^7.17.6",
@@ -20,7 +21,6 @@
     "@babel/register": "^7.17.0",
     "@babel/runtime": "^7.17.2",
     "@sendgrid/mail": "^8.1.4",
-    "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.5.1",
     "cookie-parser": "~1.4.4",
@@ -44,6 +44,8 @@
     "passport-google-oauth2": "^0.2.0",
     "pg": "^8.13.1",
     "prettier": "^3.4.2",
-    "qrcode": "^1.5.4"
+    "qrcode": "^1.5.4",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   }
 }

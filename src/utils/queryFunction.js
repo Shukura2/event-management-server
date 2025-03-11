@@ -29,11 +29,7 @@ export const dropTables = () =>
 
 export const createUsersTable = () => executeQueryArray([createUserTable]);
 export const createTable = () =>
-  executeQueryArray([
-    createEventCategoryTable,
-    createEventTable,
-    createAttendeesTable,
-  ]);
+  executeQueryArray([createEventCategoryTable, createEventTable]);
 
 export const createAttendeeTable = () =>
   executeQueryArray([createAttendeesTable]);

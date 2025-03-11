@@ -1,27 +1,41 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
+import QRCode from 'qrcode';
+import fs from 'fs';
+import assignToken from './assignToken';
 
-const html = `
-<h1>hello world</h1>
-<p>Isn't nodemailer useful?</p>
-`;
+export async function sendMail(messageDetails) {
+  const { email, username, title, eventDate, venue, eventId, userDetailsId } =
+    messageDetails;
 
-export async function sendMail() {
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
-    secure: true, // true for port 465, false for other ports
-    auth: {
-      user: 'shukurahkike@gmail.com',
-      pass: 'NodeMailer123!',
-    },
+    secure: true,
+    auth: { user: 'shukurahkike@gmail.com', pass: 'bibj nzqx gjct yham' },
   });
+
+  const token = assignToken({ userDetailsId, eventId });
+  const textToEncode = token;
+
+  const qrCodeFilePath = './qrcode.png';
+  await QRCode.toFile(qrCodeFilePath, textToEncode);
 
   const info = await transporter.sendMail({
-    from: 'ShukuBaby <shukurahkike@gmail.com>',
-    to: 'shukkike@gmail.com',
-    subject: 'Testing Testing Testing',
-    html: html,
+    from: 'Event MGT. <shukurahkike@gmail.com>',
+    to: email,
+    subject: 'Your Attendance is Confirmed! 🎉',
+    html: `<h3>Dear <strong style={{text-transform:'capitalize'}}>${username}</strong>, </h3>
+    <br />
+    <p>Thank you for confirming your attendance! We’re excited to have you at ${title}.</p>
+    <p>📍 Event Details:</p>
+    <p>🗓 Date: ${eventDate}</p>
+    <p>📍 Location: ${venue}</p>
+    <p>Attached is your QR code for check-in. Please present it at the entrance for a smooth entry.</p>
+    <p>See you soon!</p>`,
+    text: 'Please find your QR Code attached.',
+    attachments: [
+      { filename: 'qrcode.png', path: qrCodeFilePath, cid: 'qrcode' },
+    ],
   });
-
-  console.log('message sent', info);
+  fs.unlinkSync(qrCodeFilePath);
 }

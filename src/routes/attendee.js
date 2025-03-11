@@ -4,6 +4,7 @@ import {
   createAttendingEvent,
   getFeedbackAndRatings,
   getNumberOfAttendees,
+  verifyQRCodeToken,
 } from '../controllers/attendee';
 import { isLoggedIn, verifyRole } from '../middlewares';
 
@@ -31,5 +32,12 @@ attendeeRouter.put(
 );
 
 attendeeRouter.get('/feedbacks-and-ratings/:eventId', getFeedbackAndRatings);
+
+attendeeRouter.post(
+  '/verify-qr-token',
+  isLoggedIn,
+  verifyRole(['admin']),
+  verifyQRCodeToken
+);
 
 export default attendeeRouter;

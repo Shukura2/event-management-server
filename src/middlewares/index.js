@@ -1,8 +1,8 @@
 import Joi from 'joi';
 import bcrypt from 'bcrypt';
-import Model from '../models/model';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
+import Model from '../models/model';
 
 const userModel = new Model('user_details');
 dotenv.config();
@@ -45,7 +45,6 @@ export const validateExistingUser = async (req, res, next) => {
 
 export const isLoggedIn = async (req, res, next) => {
   const token = req.headers.authorization;
-  //
   let tokenValue;
   try {
     if (token) {
@@ -61,22 +60,28 @@ export const isLoggedIn = async (req, res, next) => {
       if (userData && isUserValid.rowCount) {
         next();
       } else {
-        res.status(401).json({
-          message: 'Authentication token is invalid or expired',
-          success: false,
-        });
+        res
+          .status(401)
+          .json({
+            message: 'Authentication token is invalid or expired',
+            success: false,
+          });
       }
     } else {
-      res.status(401).json({
-        message: 'Authentication token does not exist',
-        success: false,
-      });
+      res
+        .status(401)
+        .json({
+          message: 'Authentication token does not exist',
+          success: false,
+        });
     }
   } catch (error) {
-    res.status(401).json({
-      success: false,
-      message: 'Authentication token is invalid or expired',
-    });
+    res
+      .status(401)
+      .json({
+        success: false,
+        message: 'Authentication token is invalid or expired',
+      });
   }
 };
 

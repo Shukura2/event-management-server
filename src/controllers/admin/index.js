@@ -22,13 +22,10 @@ export const createEvent = async (req, res) => {
         data: event.rows[0],
       });
     } else {
-      res.status(400).json({ message: 'No file added', success: false });
+      res.status(400).json({ message: 'No file selected', success: false });
     }
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: 'Failed to create event',
-    });
+    res.status(500).json({ success: false, message: error });
   }
 };
 
@@ -41,22 +38,17 @@ export const deleteEvent = async (req, res) => {
       .status(200)
       .json({ message: 'Event deleted successfully', success: true });
   } catch (error) {
-    res.status(500).json({
-      message: 'Event not deleted',
-      success: false,
-    });
+    res.status(500).json({ message: 'Event not deleted', success: false });
   }
 };
 
 export const getAllEvent = async (req, res) => {
   const { page, size, categoryId } = req.query;
-  console.log({ page, size, categoryId }, 'ans');
   const columns = '*';
   const clause = ` WHERE category_id = '${categoryId}' LIMIT ${parseInt(size)} OFFSET ${parseInt(page)}`;
 
   try {
     const data = await eventModel.select(columns, clause);
-    console.log(data, 'ddata');
     const totalSize = await eventModel.select('*');
     res.status(200).json({
       message: data.rows,
@@ -66,7 +58,6 @@ export const getAllEvent = async (req, res) => {
       totalSize: totalSize.rows.length,
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: error, success: false });
   }
 };
@@ -77,19 +68,30 @@ export const getEvent = async (req, res) => {
     const columns = '*';
     const clause = ` WHERE event_id = '${eventId}'`;
     const data = await eventModel.select(columns, clause);
-    res.status(200).json({
-      message: data.rows[0],
-      success: true,
-    });
+    res.status(200).json({ message: data.rows[0], success: true });
   } catch (error) {
     res.status(500).json({ message: error, success: false });
   }
 };
 
 export const editEvent = async (req, res) => {
-  const data = req.body;
+  const { title, eventDate, eventTime, venue, organizer, categoryId } =
+    req.body;
 
   const { eventId } = req.params;
+
+  const file = dataUri(req).content;
+  const eventImage = await uploadToCloud(file);
+  const data = {
+    title,
+    event_date: eventDate,
+    event_time: eventTime,
+    venue,
+    organizer,
+    category_id: categoryId,
+    event_image: eventImage,
+  };
+
   const clause = `WHERE event_id = '${eventId}'`;
   try {
     const editData = await eventModel.editFromTable(data, clause);
@@ -97,6 +99,6 @@ export const editEvent = async (req, res) => {
       .status(200)
       .json({ message: 'Event updated successfully', success: true });
   } catch (error) {
-    console.log(error);
+    return res.status(500).json({ message: error, success: false });
   }
 };

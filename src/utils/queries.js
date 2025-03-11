@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS attendees(
     id UUID NOT NULL DEFAULT uuid_generate_v4(),
     event_id UUID NOT NULL DEFAULT uuid_generate_v4(),
     attendee_id UUID NOT NULL DEFAULT uuid_generate_v4(),
+    check_in VARCHAR,
     feedback VARCHAR,
     rating SMALLINT CHECK (rating BETWEEN 1 AND 5),
     PRIMARY KEY (id),

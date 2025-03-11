@@ -5,7 +5,7 @@ import {
   editEventCategory,
   getAllEventCategory,
 } from '../controllers/eventCategory';
-import { isLoggedIn, validateExistingUser, verifyRole } from '../middlewares';
+import { isLoggedIn, verifyRole } from '../middlewares';
 
 const eventCategoryRouter = express.Router();
 

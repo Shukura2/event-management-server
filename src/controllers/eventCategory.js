@@ -15,7 +15,6 @@ export const createEventCategory = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log(error, 'er');
     res.status(500).json({ message: error, success: false });
   }
 };
@@ -24,13 +23,11 @@ export const getAllEventCategory = async (req, res) => {
   const columns = '*';
   try {
     const data = await eventCategoryModel.select(columns);
-    console.log(data, 'data');
     res.status(200).json({
       data: data.rows,
       success: true,
     });
   } catch (error) {
-    console.log(error, 'get all event error');
     res.status(500).json({
       message: error.message,
     });
@@ -63,7 +60,6 @@ export const editEventCategory = async (req, res) => {
       .status(200)
       .json({ message: 'Event category updated successfully', success: true });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: error, success: false });
   }
 };
