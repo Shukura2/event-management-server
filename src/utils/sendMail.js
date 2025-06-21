@@ -1,17 +1,22 @@
 import nodemailer from 'nodemailer';
 import QRCode from 'qrcode';
 import fs from 'fs';
+import dotenv from 'dotenv';
 import assignToken from './assignToken';
 
+dotenv.config();
+
 export async function sendMail(messageDetails) {
-  const { email, username, title, eventDate, venue, eventId, userDetailsId } =
-    messageDetails;
+  const {
+    email, username, title, eventDate, venue, eventId, userDetailsId
+  } = messageDetails;
 
   const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: { user: 'shukurahkike@gmail.com', pass: 'bibj nzqx gjct yham' },
+    service: 'gmail',
+    auth: {
+      user: 'shukurahkike@gmail.com',
+      pass: process.env.NODEMAILER_AUTH_PASS,
+    },
   });
 
   const token = assignToken({ userDetailsId, eventId });
@@ -20,7 +25,7 @@ export async function sendMail(messageDetails) {
   const qrCodeFilePath = './qrcode.png';
   await QRCode.toFile(qrCodeFilePath, textToEncode);
 
-  const info = await transporter.sendMail({
+  await transporter.sendMail({
     from: 'Event MGT. <shukurahkike@gmail.com>',
     to: email,
     subject: 'Your Attendance is Confirmed! 🎉',

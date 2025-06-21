@@ -6,6 +6,7 @@ import {
 } from './queryFunction';
 
 (async () => {
+  // eslint-disable-next-line no-unused-expressions
   dropTables;
   await createUsersTable();
   await createTable();

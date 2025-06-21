@@ -1,42 +1,52 @@
 import express from 'express';
 import {
-  addFeedbackAndRating,
   createAttendingEvent,
+  getEventSummary,
   getFeedbackAndRatings,
-  getNumberOfAttendees,
+  sendMailToAttendersForFeedback,
   verifyQRCodeToken,
+  addFeedbackAndRating,
 } from '../controllers/attendee';
 import { isLoggedIn, verifyRole } from '../middlewares';
+import { validateFeedbackField } from '../middlewares/validateInputs';
 
 const attendeeRouter = express.Router();
 
 attendeeRouter.post(
   '/attending-event/:eventId',
   isLoggedIn,
-  verifyRole(['attendee']),
+  verifyRole([ 'attendee' ]),
   createAttendingEvent
 );
 
 attendeeRouter.get(
-  '/attending-event/:eventId',
+  '/event-summary',
   isLoggedIn,
-  verifyRole(['admin']),
-  getNumberOfAttendees
+  verifyRole([ 'admin' ]),
+  getEventSummary
+);
+
+attendeeRouter.get('/feedbacks-and-ratings', getFeedbackAndRatings);
+
+attendeeRouter.post(
+  '/feedback-and-ratings/:eventId',
+  isLoggedIn,
+  verifyRole([ 'admin' ]),
+  sendMailToAttendersForFeedback
 );
 
 attendeeRouter.put(
   '/feedback-and-ratings/:eventId',
   isLoggedIn,
-  verifyRole(['attendee']),
+  verifyRole([ 'attendee' ]),
+  validateFeedbackField,
   addFeedbackAndRating
 );
-
-attendeeRouter.get('/feedbacks-and-ratings/:eventId', getFeedbackAndRatings);
 
 attendeeRouter.post(
   '/verify-qr-token',
   isLoggedIn,
-  verifyRole(['admin']),
+  verifyRole([ 'admin' ]),
   verifyQRCodeToken
 );
 

@@ -12,28 +12,23 @@ const eventCategoryRouter = express.Router();
 eventCategoryRouter.post(
   '/event-category',
   isLoggedIn,
-  verifyRole(['admin']),
+  verifyRole([ 'admin' ]),
   createEventCategory
 );
 
-eventCategoryRouter.get(
-  '/event-categories',
-  isLoggedIn,
-  verifyRole(['admin']),
-  getAllEventCategory
-);
+eventCategoryRouter.get('/event-categories', getAllEventCategory);
 
 eventCategoryRouter.delete(
   '/event-category/:categoryId',
   isLoggedIn,
-  verifyRole(['admin']),
+  verifyRole([ 'admin' ]),
   deleteEventCategory
 );
 
 eventCategoryRouter.put(
   '/event-category/:categoryId',
   isLoggedIn,
-  verifyRole(['admin']),
+  verifyRole([ 'admin' ]),
   editEventCategory
 );
 

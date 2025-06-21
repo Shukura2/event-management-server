@@ -13,18 +13,14 @@ cloudinary.config({
 
 const dUri = new DataURIParser();
 
-export const dataUri = (req) =>
-  dUri.format(path.extname(req.file.originalname).toString(), req.file.buffer);
+// eslint-disable-next-line max-len
+export const dataUri = (req) => dUri.format(path.extname(req.file.originalname).toString(), req.file.buffer);
 
 export const uploadToCloud = async (file) => {
-  try {
-    const { secure_url } = await cloudinary.uploader.upload(file, {
-      folder: 'Event Images',
-    });
-    return secure_url;
-  } catch (error) {
-    throw error;
-  }
+  const { secure_url: secureUrl } = await cloudinary.uploader.upload(file, {
+    folder: 'Event Images',
+  });
+  return secureUrl;
 };
 
 export default cloudinary;

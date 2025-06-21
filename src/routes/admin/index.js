@@ -19,9 +19,9 @@ const storage = multer.memoryStorage();
 const maxSize = 5 * 1024 * 1024;
 const fileFilter = (req, file, cb) => {
   if (
-    file.mimetype === 'image/jpeg' ||
-    file.mimetype === 'image/jpg' ||
-    file.mimetype === 'image/png'
+    file.mimetype === 'image/jpeg'
+    || file.mimetype === 'image/jpg'
+    || file.mimetype === 'image/png'
   ) {
     cb(null, true);
   } else {
@@ -44,19 +44,11 @@ adminRouter.post(
   '/event',
   uploads.single('eventImage'),
   handleMulterErrors,
-  validateEvent,
   isLoggedIn,
   verifyRole(['admin']),
+  validateEvent,
   createEvent
 );
-
-adminRouter.delete(
-  '/event/:eventId',
-  isLoggedIn,
-  verifyRole(['admin']),
-  deleteEvent
-);
-adminRouter.get('/events', getAllEvent);
 adminRouter.get('/event/:eventId', getEvent);
 adminRouter.put(
   '/event/:eventId',
@@ -64,8 +56,17 @@ adminRouter.put(
   handleMulterErrors,
   validateEvent,
   isLoggedIn,
-  verifyRole(['admin']),
+  verifyRole([ 'admin' ]),
   editEvent
 );
+
+adminRouter.delete(
+  '/event/:eventId',
+  isLoggedIn,
+  verifyRole([ 'admin' ]),
+  deleteEvent
+);
+
+adminRouter.get('/events', getAllEvent);
 
 export default adminRouter;
