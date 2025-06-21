@@ -54,8 +54,6 @@ export const createAttendingEvent = async (req, res) => {
       title,
       eventDate,
       venue,
-      eventId,
-      userDetailsId,
       checkIn,
     });
     return res.status(200).json({

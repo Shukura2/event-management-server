@@ -1,14 +1,11 @@
 import nodemailer from 'nodemailer';
-import QRCode from 'qrcode';
-import fs from 'fs';
 import dotenv from 'dotenv';
-import assignToken from './assignToken';
 
 dotenv.config();
 
 export async function sendMail(messageDetails) {
   const {
-    email, username, title, eventDate, venue, eventId, userDetailsId
+    email, username, title, eventDate, venue
   } = messageDetails;
 
   const transporter = nodemailer.createTransport({
@@ -18,12 +15,6 @@ export async function sendMail(messageDetails) {
       pass: process.env.NODEMAILER_AUTH_PASS,
     },
   });
-
-  const token = assignToken({ userDetailsId, eventId });
-  const textToEncode = token;
-
-  const qrCodeFilePath = './qrcode.png';
-  await QRCode.toFile(qrCodeFilePath, textToEncode);
 
   await transporter.sendMail({
     from: 'Event MGT. <shukurahkike@gmail.com>',
@@ -37,10 +28,5 @@ export async function sendMail(messageDetails) {
     <p>📍 Location: ${venue}</p>
     <p>Attached is your QR code for check-in. Please present it at the entrance for a smooth entry.</p>
     <p>See you soon!</p>`,
-    text: 'Please find your QR Code attached.',
-    attachments: [
-      { filename: 'qrcode.png', path: qrCodeFilePath, cid: 'qrcode' },
-    ],
   });
-  fs.unlinkSync(qrCodeFilePath);
 }
