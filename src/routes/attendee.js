@@ -36,9 +36,7 @@ attendeeRouter.post(
 );
 
 attendeeRouter.put(
-  '/feedback-and-ratings/:eventId',
-  isLoggedIn,
-  verifyRole([ 'attendee' ]),
+  '/feedback-and-ratings',
   validateFeedbackField,
   addFeedbackAndRating
 );

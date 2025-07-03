@@ -70,7 +70,7 @@ class Model {
     return this.pool.query(query);
   }
 
-  async getAttendeeEmailWithAttendeeData(eventId) {
+  async getAttendeeData(eventId) {
     const query = `SELECT attendee_id, event_name, email FROM attendees JOIN user_details ON user_details.user_details_id = attendees.attendee_id WHERE event_id = '${eventId}'`;
     return this.pool.query(query);
   }

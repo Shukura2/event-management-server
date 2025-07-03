@@ -6,9 +6,7 @@ export const validateEvent = async (req, res, next) => {
   const schema = Joi.object({
     title: Joi.string().required(),
     eventDate: Joi.date().iso().required(),
-    eventTime: Joi.string()
-      .pattern(/^([01]\d|2[0-3]):([0-5]\d)$/)
-      .required(),
+    eventTime: Joi.string().required(),
     venue: Joi.string().max(100).required(),
     organizer: Joi.string().max(50).required(),
     categoryId: Joi.string().required(),
@@ -51,6 +49,7 @@ export const validateFeedbackField = async (req, res, next) => {
   const schema = Joi.object({
     feedback: Joi.string().required(),
     rating: Joi.number().required(),
+    token: Joi.string().required(),
   });
   try {
     await schema.validateAsync(req.body);

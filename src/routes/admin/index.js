@@ -5,6 +5,7 @@ import {
   deleteEvent,
   editEvent,
   getAllEvent,
+  getAllEventWithCategory,
   getEvent,
 } from '../../controllers/admin';
 import { isLoggedIn, verifyRole } from '../../middlewares';
@@ -54,19 +55,18 @@ adminRouter.put(
   '/event/:eventId',
   uploads.single('eventImage'),
   handleMulterErrors,
-  validateEvent,
   isLoggedIn,
-  verifyRole([ 'admin' ]),
+  verifyRole(['admin']),
+  validateEvent,
   editEvent
 );
-
 adminRouter.delete(
   '/event/:eventId',
   isLoggedIn,
   verifyRole([ 'admin' ]),
   deleteEvent
 );
-
-adminRouter.get('/events', getAllEvent);
+adminRouter.get('/events', getAllEventWithCategory);
+adminRouter.get('/get-events', isLoggedIn, verifyRole([ 'admin' ]), getAllEvent);
 
 export default adminRouter;

@@ -79,12 +79,12 @@ export const sendMailToAttendersForFeedback = async (req, res) => {
   const { FRONTEND_URL } = process.env;
 
   try {
-    const attendeeMail = await attendeeModel.getAttendeeEmailWithAttendeeData(eventId);
+    const attendeeData = await attendeeModel.getAttendeeData(eventId);
 
-    const mailPromises = attendeeMail.rows.map((item) => {
+    const mailPromises = attendeeData.rows.map((item) => {
       const { email, attendee_id: attendeeId, event_name: eventTitle } = item;
-      const token = assignToken({ email, attendeeId });
-      const verify = `${FRONTEND_URL}/feedback-and-rating?token=${token}`;
+      const token = assignToken({ attendeeId, eventId });
+      const verify = `${FRONTEND_URL}/feedback-form?token=${token}`;
       const content = `Hi, please we will like to get your feedback on the event. Click the link to continue <a href="${verify}">Post Feedback</a>`;
       return sendFeedbackMail(email, content, eventTitle);
     });
@@ -99,18 +99,15 @@ export const sendMailToAttendersForFeedback = async (req, res) => {
 };
 
 export const addFeedbackAndRating = async (req, res) => {
-  const { feedback, rating } = req.body;
-  const { eventId } = req.params;
+  const { feedback, rating, token } = req.body;
   try {
-    const { token } = req;
     const userData = jwt.verify(token, process.env.SECRET_KEY);
-
-    const { userDetailsId } = userData.userInfo;
+    const { attendeeId, eventId } = userData.userInfo;
     const data = { feedback, rating };
-    const clause = ` WHERE attendee_id = '${userDetailsId}' AND event_id = '${eventId}'`;
+    const clause = ` WHERE attendee_id = '${attendeeId}' AND event_id = '${eventId}'`;
     const isSubmittedFeedback = await attendeeModel.select(
       'feedback, rating',
-      ` WHERE attendee_id = '${userDetailsId}' AND event_id = '${eventId}' AND (feedback IS NOT NULL OR rating IS NOT NULL)`
+      ` WHERE attendee_id = '${attendeeId}' AND event_id = '${eventId}' AND (feedback IS NOT NULL OR rating IS NOT NULL)`
     );
     if (isSubmittedFeedback.rowCount) {
       return res.status(400).json({

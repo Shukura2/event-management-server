@@ -19,7 +19,6 @@ export const isLoggedIn = async (req, res, next) => {
       );
       req.user = userData;
       // eslint-disable-next-line prefer-destructuring
-      req.token = token.split(' ')[1];
       if (userData && isUserValid.rowCount) {
         next();
       } else {

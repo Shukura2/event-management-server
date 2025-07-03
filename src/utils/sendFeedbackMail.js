@@ -6,9 +6,14 @@ dotenv.config();
 export async function sendFeedbackMail(email, content, eventTitle) {
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
-    auth: { user: 'shukurahkike@gmail.com', pass: process.env.NODEMAILER_AUTH_PASS },
+    // port: 465,
+    // secure: true,
+    port: 587,
+    secure: false,
+    auth: {
+      user: 'shukurahkike@gmail.com',
+      pass: process.env.NODEMAILER_AUTH_PASS,
+    },
   });
 
   await transporter.sendMail({

@@ -42,7 +42,7 @@ export const deleteEvent = async (req, res) => {
   }
 };
 
-export const getAllEvent = async (req, res) => {
+export const getAllEventWithCategory = async (req, res) => {
   const { page, size, categoryId } = req.query;
   const columns = '*';
   const clause = ` WHERE category_id = '${categoryId}' LIMIT ${Number(size)} OFFSET ${Number(page)}`;
@@ -74,10 +74,30 @@ export const getEvent = async (req, res) => {
   }
 };
 
+export const getAllEvent = async (req, res) => {
+  try {
+    const columns = 'event_id, title';
+    const data = await eventModel.select(columns);
+    res.status(200).json({
+      data: data.rows,
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 export const editEvent = async (req, res) => {
   try {
-    const file = dataUri(req).content;
-    const eventImage = await uploadToCloud(file);
+    let eventImage;
+
+    if (req.file) {
+      const file = dataUri(req).content;
+      eventImage = await uploadToCloud(file);
+    }
+
     const {
       title, eventDate, eventTime, venue, organizer, categoryId
     } = req.body;
@@ -89,8 +109,11 @@ export const editEvent = async (req, res) => {
       venue,
       organizer,
       category_id: categoryId,
-      event_image: eventImage,
     };
+
+    if (eventImage) {
+      data.event_image = eventImage;
+    }
     const { eventId } = req.params;
 
     const clause = `WHERE event_id = '${eventId}'`;
