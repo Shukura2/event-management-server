@@ -38,5 +38,8 @@ app.use('/v1', attendeeRouter);
 app.use((err, req, res) => {
   res.status(400).json({ error: err.stack });
 });
+app.get('/', (req, res) => {
+  res.send('Backend is running on Render 🎉');
+});
 
 export default app;
