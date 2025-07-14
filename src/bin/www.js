@@ -16,8 +16,7 @@ const normalizePort = (val) => {
   return false;
 };
 
-const port = normalizePort(process.env.PORT || 5000);
-app.set('port', port);
+const port = process.env.PORT || 5000;
 
 const server = http.createServer(app);
 
@@ -26,14 +25,14 @@ const onError = (error) => {
     throw error;
   }
   switch (error.code) {
-  case 'EACCES':
-    process.exit(1);
-    break;
-  case 'EADDRINUSE':
-    process.exit(1);
-    break;
-  default:
-    throw error;
+    case 'EACCES':
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      process.exit(1);
+      break;
+    default:
+      throw error;
   }
 };
 
