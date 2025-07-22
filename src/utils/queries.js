@@ -1,6 +1,7 @@
 export const createUuid = `
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 `;
+
 export const createUserTable = `
 CREATE TABLE IF NOT EXISTS user_details(
     user_details_id UUID NOT NULL DEFAULT uuid_generate_v4(),
