@@ -8,7 +8,8 @@ export const createUser = async (req, res) => {
   const isUserExist = await userModel.select('*', ` WHERE "email" ='${email}'`);
 
   if (isUserExist.rowCount) {
-    const { user_details_id: userDetailsId, user_role: userRole } = isUserExist.rows[0];
+    const { user_details_id: userDetailsId, user_role: userRole } =
+      isUserExist.rows[0];
     const user = {
       userDetailsId,
       username,
@@ -22,7 +23,8 @@ export const createUser = async (req, res) => {
     const columns = 'username, email, avatar';
     const values = `'${username}', '${email}', '${avatar}'`;
     const data = await userModel.insertWithReturn(columns, values);
-    const { user_details_id: userDetailsId, user_role: userRole } = data.rows[0];
+    const { user_details_id: userDetailsId, user_role: userRole } =
+      data.rows[0];
     const user = {
       userDetailsId,
       username,
@@ -31,6 +33,21 @@ export const createUser = async (req, res) => {
       userRole,
     };
     const token = assignToken(user);
-    res.status(200).json({ user, token, message: 'Signup successfully!' });
+    res.status(201).json({ user, token, message: 'Signup successfully!' });
+  }
+};
+
+export const requestAdminAccess = async (req, res) => {
+  try {
+    const {
+      userInfo: { userDetailsId },
+    } = req.user;
+    await userModel.getAdminAccess(userDetailsId);
+    res.status(200).json({
+      message: 'Admin access granted',
+      success: true,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message, success: false });
   }
 };

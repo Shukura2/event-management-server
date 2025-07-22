@@ -79,6 +79,11 @@ class Model {
     const query = 'SELECT feedback, rating, username, avatar FROM attendees JOIN user_details ON attendees.attendee_id = user_details.user_details_id WHERE (feedback IS NOT NULL OR rating IS NOT NULL)';
     return this.pool.query(query);
   }
+
+  async getAdminAccess(userId) {
+    const query = `UPDATE user_details SET user_role = 'admin' WHERE user_details_id = '${userId}'`;
+    return this.pool.query(query);
+  }
 }
 
 export default Model;

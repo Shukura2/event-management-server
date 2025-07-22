@@ -1,14 +1,24 @@
 import {
   createUsersTable,
-  createTable,
-  dropTables,
+  dropAttendeesTables,
   createAttendeeTable,
+  createEventCategoriesTable,
+  dropEventTables,
+  dropEventCategoryTables,
+  dropUserTables,
+  createEventsTable,
 } from './queryFunction';
 
 (async () => {
   // eslint-disable-next-line no-unused-expressions
-  dropTables;
+  // await dropTables();
+  await dropAttendeesTables();
+  await dropEventTables();
+  await dropEventCategoryTables();
+  await dropUserTables();
+
   await createUsersTable();
-  await createTable();
+  await createEventCategoriesTable();
+  await createEventsTable();
   await createAttendeeTable();
 })();

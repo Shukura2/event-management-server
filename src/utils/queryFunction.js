@@ -19,16 +19,16 @@ export const executeQueryArray = async (arr) =>
     });
   });
 
-export const dropTables = () =>
-  executeQueryArray([
-    dropAttendeesTable,
-    dropEventTable,
-    dropEventCategoryTable,
-    dropUserTable,
-  ]);
+export const dropAttendeesTables = () =>
+  executeQueryArray([dropAttendeesTable]);
+export const dropEventTables = () => executeQueryArray([dropEventTable]);
+export const dropEventCategoryTables = () =>
+  executeQueryArray([dropEventCategoryTable]);
+export const dropUserTables = () => executeQueryArray([dropUserTable]);
 
 export const createUsersTable = () => executeQueryArray([createUserTable]);
-export const createTable = () =>
-  executeQueryArray([createEventCategoryTable, createEventTable]);
+export const createEventCategoriesTable = () =>
+  executeQueryArray([createEventCategoryTable]);
+export const createEventsTable = () => executeQueryArray([createEventTable]);
 export const createAttendeeTable = () =>
   executeQueryArray([createAttendeesTable]);
