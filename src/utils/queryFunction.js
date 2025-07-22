@@ -8,6 +8,7 @@ import {
   createEventCategoryTable,
   dropAttendeesTable,
   createAttendeesTable,
+  createUuid,
 } from './queries';
 
 export const executeQueryArray = async (arr) =>
@@ -26,6 +27,7 @@ export const dropEventCategoryTables = () =>
   executeQueryArray([dropEventCategoryTable]);
 export const dropUserTables = () => executeQueryArray([dropUserTable]);
 
+export const createTableUuid = () => executeQueryArray([createUuid]);
 export const createUsersTable = () => executeQueryArray([createUserTable]);
 export const createEventCategoriesTable = () =>
   executeQueryArray([createEventCategoryTable]);

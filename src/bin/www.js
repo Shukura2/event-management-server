@@ -6,6 +6,7 @@ import {
   createAttendeeTable,
   createEventCategoriesTable,
   createEventsTable,
+  createTableUuid,
   createUsersTable,
 } from '../utils/queryFunction';
 
@@ -26,6 +27,7 @@ const port = process.env.PORT || 5000;
 
 const server = http.createServer(app);
 (async () => {
+  await createTableUuid();
   await createUsersTable();
   await createEventCategoriesTable();
   await createEventsTable();
