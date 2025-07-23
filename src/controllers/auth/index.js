@@ -8,8 +8,7 @@ export const createUser = async (req, res) => {
   const isUserExist = await userModel.select('*', ` WHERE "email" ='${email}'`);
 
   if (isUserExist.rowCount) {
-    const { user_details_id: userDetailsId, user_role: userRole } =
-      isUserExist.rows[0];
+    const { user_details_id: userDetailsId, user_role: userRole } = isUserExist.rows[0];
     const user = {
       userDetailsId,
       username,
@@ -23,8 +22,7 @@ export const createUser = async (req, res) => {
     const columns = 'username, email, avatar';
     const values = `'${username}', '${email}', '${avatar}'`;
     const data = await userModel.insertWithReturn(columns, values);
-    const { user_details_id: userDetailsId, user_role: userRole } =
-      data.rows[0];
+    const { user_details_id: userDetailsId, user_role: userRole } = data.rows[0];
     const user = {
       userDetailsId,
       username,

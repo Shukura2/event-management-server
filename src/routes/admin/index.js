@@ -46,7 +46,7 @@ adminRouter.post(
   uploads.single('eventImage'),
   handleMulterErrors,
   isLoggedIn,
-  verifyRole(['admin']),
+  verifyRole([ 'admin' ]),
   validateEvent,
   createEvent
 );
@@ -56,7 +56,7 @@ adminRouter.put(
   uploads.single('eventImage'),
   handleMulterErrors,
   isLoggedIn,
-  verifyRole(['admin']),
+  verifyRole([ 'admin' ]),
   validateEvent,
   editEvent
 );

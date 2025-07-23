@@ -4,7 +4,6 @@ import {
   getEventSummary,
   getFeedbackAndRatings,
   sendMailToAttendersForFeedback,
-  verifyQRCodeToken,
   addFeedbackAndRating,
 } from '../controllers/attendee';
 import { isLoggedIn, verifyRole } from '../middlewares';
@@ -39,13 +38,6 @@ attendeeRouter.put(
   '/feedback-and-ratings',
   validateFeedbackField,
   addFeedbackAndRating
-);
-
-attendeeRouter.post(
-  '/verify-qr-token',
-  isLoggedIn,
-  verifyRole([ 'admin' ]),
-  verifyQRCodeToken
 );
 
 export default attendeeRouter;

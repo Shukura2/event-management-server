@@ -20,7 +20,6 @@ app.use(
   })
 );
 app.use(cookieParser());
-// app.use(cors());
 app.use(
   cors({
     origin: 'https://event-management-client-eta.vercel.app/',
@@ -35,13 +34,9 @@ app.use('/v1', authRouter);
 app.use('/v1', adminRouter);
 app.use('/v1', eventCategoryRouter);
 app.use('/v1', attendeeRouter);
-app.use((err, req, res, next) => {
-  console.error('Error caught:', err);
+app.use((err, req, res,) => {
   res.status(500).json({ error: err.stack || 'Internal Server Error' });
 });
-// app.use((err, req, res) => {
-//   res.status(400).json({ error: err.stack });
-// });
 app.get('/', (req, res) => {
   res.send('Backend is running on Render 🎉');
 });
